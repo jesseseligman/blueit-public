@@ -5,39 +5,43 @@ const port = process.env.PORT || 8000;
 const path = require('path');
 
 const bodyParser = require('body-parser');
-// const cookieSession = require('cookie-session');
+const morgan = require('morgan');
 
 const users = require('./routes/users');
 const topics = require('./routes/topics');
 const posts = require('./routes/posts');
 
+
 const app = express();
 
 app.disable('x-powered-by');
 
-if (process.env.NODE_ENV !== 'test') {
-  const morgan = require('morgan');
-  app.use(morgan('short'));
+switch (app.get('env')) {
+  case 'development':
+    app.use(morgan('dev'));
+    break;
+
+  case 'production':
+    app.use(morgan('short'));
+    break;
+
+  default:
 }
 
 app.use(bodyParser.json());
-// app.use(cookieParser());
-// app.use(cookieSession({
-//   name: 'blueit',
-//   secret: process.env.SESSION_SECRET
-// }));
 
-// app.use(users);
+app.use(users);
 app.use(topics);
-// app.use(posts);
+app.use(posts);
 
 app.use((_req, res) => {
   res.sendStatus(404);
 });
 
 app.use((err, _req, res, _next) => {
-  if (err.status || err.statusCode) {
-    return res.status(err.status || err.statusCode).send(err);
+  console.log(err);
+  if (err.status || err.output && err.output.statusCode) {
+    return res.status(err.status || err.output.statusCode).send(err.message);
   }
 
   console.error(err.stack);

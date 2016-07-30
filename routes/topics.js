@@ -10,8 +10,10 @@ const knex = require('../knex');
 
 router.get('/topics', (_req, res, next) => {
   knex('topics')
-    .orderBy('id')
-    .then((topics) => {
+    .orderBy('name')
+    .then((rows) => {
+      const topics = camelizeKeys(rows);
+
       res.send(topics);
     })
     .catch((err) => {
@@ -20,12 +22,14 @@ router.get('/topics', (_req, res, next) => {
 });
 
 router.post('/topics', ev(validations.post), (req, res, next) => {
-  const newPost = req.body;
+  const newPost = decamelizeKeys(req.body);
 
   knex('topics')
     .insert(newPost, '*')
-    .then((topics) => {
-      res.send(topics[0]);
+    .then((rows) => {
+      const post = camelizeKeys(rows[0]);
+      
+      res.send(post);
     })
     .catch((err) => {
       next(err);
