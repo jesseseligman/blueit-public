@@ -1,0 +1,15 @@
+i {
+  padding-right: 5px;
+}
+
+.dropdown-content li>span:hover {
+  background-color: #bdbdbd;
+}
+
+h5 {
+  display: inline-block;
+}
+
+.post-menu {
+  margin-top: 5%;
+}
