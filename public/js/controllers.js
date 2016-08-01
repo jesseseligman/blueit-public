@@ -3,7 +3,7 @@
 
   const app = angular.module('blueitApp');
 
-  app.controller('topicsCtrl', function ($timeout) {
+  app.controller('topicsCtrl', function () {
     this.topics = [
       {
         id: 'All',
@@ -23,12 +23,21 @@
       }
     ];
 
+    this.addTopic = function() {
+      this.topics.push({
+        id: this.topicId,
+        name: this.newTopic
+      });
+      this.topicId += 1;
+      this.newTopic = '';
+    };
 
+    this.topicId = 4;
     this.selected = 'All';
 
     this.postTopic = 'new';
 
-    this.newTopic = {};
+    this.newTopic = '';
 
     this.isSelected = (id) => id === Number.parseInt(this.selected) || this.selected === 'All';
 
@@ -45,6 +54,11 @@
     this.downVote = (post) => {
       post.rating -= 1;
     };
+
+    this.submitPost = function() {
+      this.posts.push(this.newPost);
+      this.newPost = {};
+    }
 
     this.newPost = {};
     this.posts = [

@@ -36,6 +36,7 @@
             <select ng-model="postsCtrl.sortBy">
               <option value="-rating">Rating</option>
               <option value="title">Name</option>
+              <option value="-created_at">Date</option>
             </select>
             <label>Sort By</label>
           </div>
@@ -72,7 +73,7 @@
           <div class="modal-content">
             <div class="row">
 
-              <form id="new-post" class="col s12" action="#">
+              <form id="new-post" name="newPost" class="col s12" action="#">
                 <div class="row">
                   <div class="input-field col s12 l4">
                     <select ng-model="topicsCtrl.postTopic" material-select watch>
@@ -84,29 +85,37 @@
                   </div>
 
                   <div class="input-field col s12 l8">
-                    <input ng-model="topicsCtrl.newTopic.name" ng-disabled="topicsCtrl.postTopic !=='new'" id="new-topic" type="text" name="topic-name">
-                    <label for="new-topic">New Topic</label>
+                    <input ng-model="topicsCtrl.newTopic" ng-disabled="topicsCtrl.postTopic !=='new'" id="topicName" type="text" name="topicName" ng-required="topicsCtrl.postTopic === 'new'" ng-minlength="3" ng-class="{'valid': newPost.topicName.$valid, 'invalid': newPost.topicName.$invalid && newPost.topicName.$dirty}">
+                    <label for="topicName">New Topic</label>
                   </div>
                   <div class="input-field col s12 l6">
-                    <input ng-model="postsCtrl.newPost.title" id="post-title" type="text" name="post-title" value="">
+                    <input ng-model="postsCtrl.newPost.title" id="post-title" type="text" name="title" ng-class="{'valid': newPost.title.$valid, 'invalid': newPost.title.$invalid && newPost.title.$dirty}" ng-minlength="3" required>
                     <label for="post-title">Title</label>
                   </div>
                   <div class="input-field col s12 l6">
-                    <input ng-model="postsCtrl.newPost.image_url" id="post-url" type="text" name="post-url" value="" valid>
+                    <input ng-model="postsCtrl.newPost.image_url" id="post-url" type="url" name="image_url" ng-class="{'valid': newPost.image_url.$valid, 'invalid': newPost.image_url.$invalid && newPost.image_url.$dirty}" required>
                     <label for="post-url">Image URL</label>
                   </div>
                   <div class="input-field col s12">
-                    <input ng-model="postsCtrl.newPost.description" id="post-description" type="text" name="post-description" value="" valid>
+                    <input ng-model="postsCtrl.newPost.description" id="post-description" type="text" name="description" ng-class="{'valid': newPost.description.$valid, 'invalid': newPost.description.$invalid && newPost.description.$dirty}" ng-minlength="3" ng-maxlength="60" required>
                     <label for="post-description">Description</label>
                   </div>
-                </div>
 
+
+                  <button class="btn waves-effect waves-light modal-action modal-close" form="new-post" type="submit" ng-click="postsCtrl.submitPost(); topicsCtrl.addTopic()">Submit
+                  <i class="material-icons right">send</i>
+                  </button>
+                </div>
               </form>
             </div>
           </div>
-          <div class="modal-footer">
-            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-          </div>
+          <!-- <div class="modal-footer">
+            <div class="row">
+              <div class="col s4 offset-s3">
+
+              </div>
+            </div>
+          </div> -->
         </div>
 
       </div>

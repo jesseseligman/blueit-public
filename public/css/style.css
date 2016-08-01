@@ -27,6 +27,11 @@ h5 {
   color: #811313;
 }
 
+#new-post button {
+  margin: 0 auto;
+  display: block;
+}
+
 /*nav .brand-logo {
   color: #800313;
 }*/
