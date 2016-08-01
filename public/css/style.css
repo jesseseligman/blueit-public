@@ -7,9 +7,26 @@ i {
 }
 
 h5 {
-  display: inline-block;
+  font-size: 1.5rem;
 }
 
 .post-menu {
   margin-top: 5%;
 }
+
+.rating {
+  font-size: 1.5rem;
+}
+
+.date {
+  font-size: .9rem;
+  margin-left: .1rem;
+}
+
+#new-post label.active {
+  color: #811313;
+}
+
+/*nav .brand-logo {
+  color: #800313;
+}*/

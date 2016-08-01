@@ -3,21 +3,11 @@
 
   const app = angular.module('blueitApp');
 
-  // app.controller('materialize', function() {
-  //   this.
-  // })
-
-  // const materialize = angular.module('materializeApp', ['ui.materialize'])
-  //   .controller('BodyController', ["$scope", function ($scope) {
-  //       $scope.select = {
-  //           value: "Option1",
-  //           choices: ["Option1", "I'm an option", "This is materialize", "No, this is Patrick."]
-  //       };
-  //   }]);
-  app.controller('topicsCtrl', function () {
+  app.controller('topicsCtrl', function ($timeout) {
     this.topics = [
-      {id: null,
-       name: 'All'
+      {
+        id: 'All',
+        name: 'All'
       },
       {
         id: 1,
@@ -33,11 +23,30 @@
       }
     ];
 
+
     this.selected = 'All';
+
+    this.postTopic = 'new';
+
+    this.newTopic = {};
+
+    this.isSelected = (id) => id === Number.parseInt(this.selected) || this.selected === 'All';
+
+
   });
 
   app.controller('postsCtrl', function() {
-    this.sortBy = 'rating'
+    this.sortBy = '-rating';
+
+    this.upVote = (post) => {
+      post.rating += 1;
+    };
+
+    this.downVote = (post) => {
+      post.rating -= 1;
+    };
+
+    this.newPost = {};
     this.posts = [
       {
         "created_at": "2016-06-20T14:26:16.000Z",
@@ -117,6 +126,8 @@
         "user_id": 1
       }
     ];
+
+
   });
 
 })();

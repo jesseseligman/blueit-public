@@ -7,39 +7,108 @@
     <link type="text/css" rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
-  <body class="grey">
+  <body class="blue lighten-4">
 
 
     <header>
 
       <nav>
-        <div class="nav-wrapper grey darken-2">
+        <div class="nav-wrapper blue darken-4">
           <a href="#" class="brand-logo center">Ya Blue It</a>
-          <ul id="nav-mobile" class="left hide-on-med-and-down">
-            <li><a href="#"><i class="material-icons">library_add</i>New Post</a></li>
+          <ul id="nav-mobile" class="left">
+            <li><a href="#post-modal" class="modal-trigger"><i class="material-icons">library_add</i>New Post</a></li>
           </ul>
         </div>
       </nav>
     </header>
 
-    <main ng-controller="topicsCtrl as topicCtrl">
-      <div ng-controller="postsCtrl as postsCtl" class="container">
+    <main ng-controller="topicsCtrl as topicsCtrl">
+      <div ng-controller="postsCtrl as postsCtrl" class="container">
         <div class="row">
-          <div class="post-menu input-field col s12 m3 offset-m2">
-            <select name="topic" ng-model="topicCtrl.selected" material-select watch>
-              <option ng-repeat="topic in topicCtrl.topics">{{topic.name}}</option>
+
+          <div class="post-menu input-field col s12 m5 l4 offset-l1">
+            <select ng-model="topicsCtrl.selected" material-select watch>
+              <option ng-repeat="topic in topicsCtrl.topics" ng-value="topic.id">{{ topic.name }}</option>
             </select>
             <label>Topic</label>
           </div>
-          <div class="post-menu input-field col s12 m3 offset-m2">
+          <div class="post-menu input-field col s12 m5 l4 offset-l2">
             <select ng-model="postsCtrl.sortBy">
-              <option value="name">Name</option>
               <option value="-rating">Rating</option>
+              <option value="title">Name</option>
             </select>
             <label>Sort By</label>
           </div>
 
+          <div ng-repeat="post in postsCtrl.posts | orderBy : postsCtrl.sortBy" class="col s12">
+            <div ng-show="topicsCtrl.isSelected(post.topic_id)" class="grey lighten-4 card horizontal">
+              <div class="card-image">
+                <img ng-src="{{post.image_url}}">
+              </div>
+              <div class="card-stacked">
+                <div class="card-content">
+                  <h5>{{  post.title }}</h5>
+                  <p>{{ post.description }}</p>
+                </div>
+                <div class="card-action">
+                  <div class="row">
+                    <a href="#!" ng-click="postsCtrl.upVote(post)" class="col s1"><i class="material-icons">thumb_up</i></a>
+                    <div class="rating col s1">
+                      {{ post.rating }}
+                    </div>
+                    <a href="#!" ng-click="postsCtrl.downVote(post)" class="col s1">
+                      <i class="material-icons">thumb_down</i>
+                    </a>
+                    <div class="date col s10">{{ post.created_at | date:'MM/dd/yyyy @ h:mma'  }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <div id="post-modal" class="modal">
+          <div class="modal-content">
+            <div class="row">
+
+              <form id="new-post" class="col s12" action="#">
+                <div class="row">
+                  <div class="input-field col s12 l4">
+                    <select ng-model="topicsCtrl.postTopic" material-select watch>
+                      <option value="new">Create New</option>
+                      <option ng-repeat="topic in topicsCtrl.topics |   limitTo:-topicsCtrl.topics.length + 1"  ng-value="topic.name">{{ topic.name }}
+                      </option>
+                    </select>
+                    <label>Topic</label>
+                  </div>
+
+                  <div class="input-field col s12 l8">
+                    <input ng-model="topicsCtrl.newTopic.name" ng-disabled="topicsCtrl.postTopic !=='new'" id="new-topic" type="text" name="topic-name">
+                    <label for="new-topic">New Topic</label>
+                  </div>
+                  <div class="input-field col s12 l6">
+                    <input ng-model="postsCtrl.newPost.title" id="post-title" type="text" name="post-title" value="">
+                    <label for="post-title">Title</label>
+                  </div>
+                  <div class="input-field col s12 l6">
+                    <input ng-model="postsCtrl.newPost.image_url" id="post-url" type="text" name="post-url" value="" valid>
+                    <label for="post-url">Image URL</label>
+                  </div>
+                  <div class="input-field col s12">
+                    <input ng-model="postsCtrl.newPost.description" id="post-description" type="text" name="post-description" value="" valid>
+                    <label for="post-description">Description</label>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+          </div>
+        </div>
+
       </div>
     </main>
 
