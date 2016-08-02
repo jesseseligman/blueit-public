@@ -32,6 +32,10 @@ h5 {
   display: block;
 }
 
+input#topicName[disabled] {
+  border-bottom: 1px solid grey;
+  box-shadow: none;
+}
 /*nav .brand-logo {
   color: #800313;
 }*/

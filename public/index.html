@@ -9,9 +9,7 @@
   </head>
   <body class="blue lighten-4">
 
-
     <header>
-
       <nav>
         <div class="nav-wrapper blue darken-4">
           <a href="#" class="brand-logo center">Ya Blue It</a>
@@ -41,10 +39,10 @@
             <label>Sort By</label>
           </div>
 
-          <div ng-repeat="post in postsCtrl.posts | orderBy : postsCtrl.sortBy" class="col s12">
-            <div ng-show="topicsCtrl.isSelected(post.topic_id)" class="grey lighten-4 card horizontal">
+          <div ng-repeat="post in postsCtrl.posts | orderBy : postsCtrl.sortBy" class="col s12" ng-show="topicsCtrl.isSelected(post.topicId)">
+            <div class="grey lighten-4 card horizontal">
               <div class="card-image">
-                <img ng-src="{{post.image_url}}">
+                <img ng-src="{{post.imageUrl}}">
               </div>
               <div class="card-stacked">
                 <div class="card-content">
@@ -60,7 +58,7 @@
                     <a href="#!" ng-click="postsCtrl.downVote(post)" class="col s1">
                       <i class="material-icons">thumb_down</i>
                     </a>
-                    <div class="date col s10">{{ post.created_at | date:'MM/dd/yyyy @ h:mma'  }}
+                    <div class="date col s10">{{ post.createdAt | date:'MM/dd/yyyy @ h:mma'  }}
                     </div>
                   </div>
                 </div>
@@ -76,24 +74,27 @@
               <form id="new-post" name="newPost" class="col s12" action="#">
                 <div class="row">
                   <div class="input-field col s12 l4">
-                    <select ng-model="topicsCtrl.postTopic" material-select watch>
-                      <option value="new">Create New</option>
-                      <option ng-repeat="topic in topicsCtrl.topics |   limitTo:-topicsCtrl.topics.length + 1"  ng-value="topic.name">{{ topic.name }}
+                    <select ng-model="topicsCtrl.postTopic" material-select watch ng-change="topicsCtrl.formatField()">
+                      <option value="Create New">Create New</option>
+                      <option ng-repeat="topic in topicsCtrl.topics |   limitTo:-topicsCtrl.topics.length + 1"  ng-value="topic.id">{{ topic.name }}
                       </option>
                     </select>
                     <label>Topic</label>
                   </div>
 
                   <div class="input-field col s12 l8">
-                    <input ng-model="topicsCtrl.newTopic" ng-disabled="topicsCtrl.postTopic !=='new'" id="topicName" type="text" name="topicName" ng-required="topicsCtrl.postTopic === 'new'" ng-minlength="3" ng-class="{'valid': newPost.topicName.$valid, 'invalid': newPost.topicName.$invalid && newPost.topicName.$dirty}">
+                    <input ng-model="topicsCtrl.newTopic" ng-disabled="topicsCtrl.postTopic !=='Create New'" id="topicName" type="text" name="topicName" ng-required="topicsCtrl.postTopic === 'Create New'" ng-minlength="3" ng-class="{'valid': newPost.topicName.$valid, 'invalid': newPost.topicName.$invalid && newPost.topicName.$dirty}">
                     <label for="topicName">New Topic</label>
                   </div>
+                </div>
+
+                <div class="row">
                   <div class="input-field col s12 l6">
                     <input ng-model="postsCtrl.newPost.title" id="post-title" type="text" name="title" ng-class="{'valid': newPost.title.$valid, 'invalid': newPost.title.$invalid && newPost.title.$dirty}" ng-minlength="3" required>
                     <label for="post-title">Title</label>
                   </div>
                   <div class="input-field col s12 l6">
-                    <input ng-model="postsCtrl.newPost.image_url" id="post-url" type="url" name="image_url" ng-class="{'valid': newPost.image_url.$valid, 'invalid': newPost.image_url.$invalid && newPost.image_url.$dirty}" required>
+                    <input ng-model="postsCtrl.newPost.imageUrl" id="post-url" type="url" name="imageUrl" ng-class="{'valid': newPost.imageUrl.$valid, 'invalid': newPost.imageUrl.$invalid && newPost.imageUrl.$dirty}" required>
                     <label for="post-url">Image URL</label>
                   </div>
                   <div class="input-field col s12">
@@ -101,21 +102,14 @@
                     <label for="post-description">Description</label>
                   </div>
 
-
-                  <button class="btn waves-effect waves-light modal-action modal-close" form="new-post" type="submit" ng-click="postsCtrl.submitPost(); topicsCtrl.addTopic()">Submit
+                  <button class="btn waves-effect waves-light modal-action modal-close" form="new-post" type="submit" name="action" ng-click="postsCtrl.submitPost(topicsCtrl.postTopic, topicsCtrl.newTopic)">Submit
                   <i class="material-icons right">send</i>
                   </button>
+
                 </div>
               </form>
             </div>
           </div>
-          <!-- <div class="modal-footer">
-            <div class="row">
-              <div class="col s4 offset-s3">
-
-              </div>
-            </div>
-          </div> -->
         </div>
 
       </div>
@@ -123,6 +117,8 @@
 
     <script src="js/jquery-2.1.4.min.js"></script>
     <script src="js/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.js">
+    </script>
     <script src="js/materialize.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.1.9/angular-materialize.min.js"></script>
     <script src="js/app.js"></script>

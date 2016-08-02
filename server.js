@@ -30,6 +30,8 @@ switch (app.get('env')) {
 
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(users);
 app.use(topics);
 app.use(posts);

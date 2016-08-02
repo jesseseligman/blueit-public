@@ -6,5 +6,5 @@
   $(document).ready(function(){
     $('.modal-trigger').leanModal();
   });
-  const app = angular.module('blueitApp', ['ui.materialize']);
+  const app = angular.module('blueitApp', ['ui.materialize', 'ngRoute']);
 })();

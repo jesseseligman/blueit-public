@@ -10,7 +10,7 @@ const ev = require('express-validation');
 const validations = require('../validations/topics');
 const knex = require('../knex');
 
-router.post('/users', (req, res, next) => {
+router.post('/api/users', (req, res, next) => {
   const { username, password } = req.body;
 
   knex('users')
