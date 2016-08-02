@@ -5,16 +5,17 @@
 
   app.controller('topicsCtrl', topicsCtrl)
 
-  topicsCtrl.$inject = ['$http', '$routeParams']
+  topicsCtrl.$inject = ['$routeParams', 'topicsSvc']
 
-  function topicsCtrl($http, $routeParams) {
+  function topicsCtrl($routeParams, topicsSvc) {
     this.topics = [];
 
     const activate = () => {
-      $http.get('/api/topics')
+
+      topicsSvc.getTopics()
         .then((topics) => {
-          this.topics = topics.data;
-          this.topics.unshift({ id: 'All', name: 'All'});
+          topics.unshift({ id: 'All', name: 'All'});
+          this.topics = topics;
         })
         .catch((err) => {
           throw err;
@@ -22,10 +23,6 @@
     };
 
     activate();
-
-    this.addTopic = () => {
-
-    };
 
     this.formatField = () => {
       if (this.postTopic !== 'Create New') {
