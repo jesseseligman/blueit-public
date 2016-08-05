@@ -16,6 +16,11 @@
           <ul id="nav-mobile" class="left">
             <li><a href="#post-modal" class="modal-trigger"><i class="material-icons">library_add</i>New Post</a></li>
           </ul>
+          <ul class="right" ng-controller="authCtrl as authCtrl">
+            <li><a ng-show="!authCtrl.isLoggedIn()" href="register.html">Register!</a></li>
+            <li><a href="login.html" ng-show="!authCtrl.isLoggedIn()" href="register.html">Login!</a></li>
+            <li><a ng-click="authCtrl.logout()" ng-show="authCtrl.isLoggedIn()" href="#">Logout!</a></li>
+          </ul>
         </div>
       </nav>
     </header>
@@ -58,7 +63,8 @@
                     <a href="#!" ng-click="postsCtrl.downVote(post)" class="col s1">
                       <i class="material-icons">thumb_down</i>
                     </a>
-                    <div class="date col s10">{{ post.createdAt | date:'MM/dd/yyyy @ h:mma'  }}
+                    <p> </p>
+                    <div class="date col s10">Submitted by {{post.username }} <br> {{ post.createdAt | date:'MM/dd/yyyy @ h:mma'  }}
                     </div>
                   </div>
                 </div>
@@ -68,10 +74,10 @@
         </div>
 
         <div id="post-modal" class="modal">
-          <div class="modal-content">
+          <div class="modal-content" ng-controller="authCtrl as authCtrl">
             <div class="row">
 
-              <form id="new-post" name="newPost" class="col s12" action="#">
+              <form id="new-post" name="newPost" class="col s12" ng-submit="postsCtrl.submitPost(newPost, topicsCtrl.postTopic, topicsCtrl.newTopic); topicsCtrl.formatField(); topicsCtrl.activate()">
                 <div class="row">
                   <div class="input-field col s12 l4">
                     <select ng-model="topicsCtrl.postTopic" material-select watch ng-change="topicsCtrl.formatField()">
@@ -102,7 +108,7 @@
                     <label for="post-description">Description</label>
                   </div>
 
-                  <button class="btn waves-effect waves-light modal-action modal-close" form="new-post" type="submit" name="action" ng-click="postsCtrl.submitPost(topicsCtrl.postTopic, topicsCtrl.newTopic)">Submit
+                  <button class="btn waves-effect waves-light" form="new-post" type="submit" name="action" >Submit
                   <i class="material-icons right">send</i>
                   </button>
 
@@ -121,6 +127,8 @@
     </script>
     <script src="js/materialize.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.1.9/angular-materialize.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-cookies.js"></script>
+
 
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>

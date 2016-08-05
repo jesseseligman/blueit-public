@@ -3,26 +3,35 @@
 
   const app = angular.module('blueitApp');
 
-  app.controller('topicsCtrl', topicsCtrl)
+  app.controller('topicsCtrl', topicsCtrl);
+  app.controller('postsCtrl', postsCtrl);
+  app.controller('usersCtrl', usersCtrl);
+  app.controller('authCtrl', authCtrl);
 
-  topicsCtrl.$inject = ['$routeParams', 'topicsSvc']
+  topicsCtrl.$inject = ['$routeParams', 'topicsSvc'];
+  postsCtrl.$inject = ['$routeParams', 'postsSvc'];
+  usersCtrl.$inject = ['$routeParams', 'usersSvc'];
+  authCtrl.$inject = ['auth', '$location', '$cookies'];
 
   function topicsCtrl($routeParams, topicsSvc) {
     this.topics = [];
+    this.selected = 'All';
+    this.postTopic = 'Create New';
+    this.newTopic = '';
 
-    const activate = () => {
-
+    this.activate = () => {
       topicsSvc.getTopics()
         .then((topics) => {
           topics.unshift({ id: 'All', name: 'All'});
           this.topics = topics;
+          this.newTopic = '';
         })
         .catch((err) => {
           throw err;
         });
     };
 
-    activate();
+    this.activate();
 
     this.formatField = () => {
       if (this.postTopic !== 'Create New') {
@@ -30,23 +39,13 @@
       }
     };
 
-    this.selected = 'All';
-
-    this.postTopic = 'Create New';
-
-    this.newTopic = '';
-
     this.isSelected = (id) => id === Number.parseInt(this.selected) || this.selected === 'All';
-
-
   };
 
-  app.controller('postsCtrl', postsCtrl)
-
-  postsCtrl.$inject = ['$http', '$routeParams'];
-
-  function postsCtrl($http, $routeParams) {
+  function postsCtrl( $routeParams, postsSvc) {
     this.sortBy = '-rating';
+    this.newPost = {};
+    this.posts = [];
 
     this.upVote = (post) => {
       post.rating += 1;
@@ -56,59 +55,84 @@
       post.rating -= 1;
     };
 
-    this.submitPost = function(postTopic, newTopic) {
+    this.submitPost = function(newPost, postTopic, newTopic) {
+      if (newPost.$invalid) {
+        return console.log('invalid');
+      }
       if (postTopic === 'Create New') {
-        console.log(newTopic);
-        $http.post('/api/topics', {
-          name: newTopic
-        })
-          .then((topic) => {
-
-            this.newPost.topicId = topic.data.id;
-            this.newPost.userId = 1;
-            this.newPost.rating = 0;
-
-            return $http.post('/api/posts', this.newPost);
+        postsSvc.submitTopic(newTopic)
+          .then((topicId) => {
+            return postsSvc.submitPost(topicId, this.newPost)
           })
-          .then((post) => {
+          .then((res) => {
             this.newPost = {};
+            $('#post-modal').closeModal();
             activate();
           })
           .catch((err) => {
             throw err;
-          })
+          });
       }
       else {
-        this.newPost.topicId = postTopic;
-        this.newPost.userId = 1;
-        this.newPost.rating = 0;
-        console.log(this.newPost);
-        $http.post('/api/posts', this.newPost)
-          .then((post) => {
+        return postsSvc.submitPost(postTopic, this.newPost)
+          .then((res) => {
             this.newPost = {};
             activate();
           })
           .catch((err) => {
             throw err;
           });
-      };
+      }
     };
 
-    this.newPost = {};
-
     const activate = () => {
-      $http.get('/api/posts')
+      postsSvc.getPosts()
         .then((posts) => {
-          this.posts = posts.data;
+          this.posts = posts;
+        })
+        .catch((err) => {
+          throw err;
+        })
+    };
+
+    activate();
+  };
+
+  function usersCtrl($routeParams, usersSvc) {
+    this.user = {};
+
+    this.addUser = () => {
+      usersSvc.postUser(this.user)
+        .then((user) => {
+          console.log(user);
         })
         .catch((err) => {
           throw err;
         });
+    }
+  }
+
+  function authCtrl(auth, $location, $cookies) {
+    this.username = '';
+    this.password = '';
+    this.isLoggedIn = () => {
+      return $cookies.get('loggedIn');
+    }
+
+    this.loggedInId;
+
+    this.login = () => {
+      auth.login(this.username, this.password)
+        .then((user) => {
+          $location.path('/');
+        })
+        .catch((err) => {
+          alert('Login Failed');
+        });
     };
 
-    activate();
-    this.posts = [];
-
-  };
-
+    this.logout = () => {
+      auth.logout();
+    }
+  }
 })();

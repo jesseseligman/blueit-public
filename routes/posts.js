@@ -9,9 +9,11 @@ const { camelizeKeys, decamelizeKeys } = require('humps');
 const ev = require('express-validation');
 const validations = require('../validations/posts');
 const knex = require('../knex');
+const { checkAuth } = require('../middleware');
 
 router.get('/api/posts', (req, res, next) => {
-  knex('posts')
+  knex.from('posts')
+    .innerJoin('users', 'users.id', 'posts.user_id')
     .orderBy('title')
     .then((rows) => {
       const posts = camelizeKeys(rows);
@@ -46,9 +48,10 @@ router.get('/api/posts/:topicId', (req, res, next) => {
     });
 });
 
-router.post('/api/posts', ev(validations.post), (req, res, next) => {
-  const { title, imageUrl, description, rating, topicId, userId } = req.body;
+router.post('/api/posts', checkAuth, ev(validations.post), (req, res, next) => {
+  const { title, imageUrl, description, rating, topicId } = req.body;
 
+  const userId = req.token.userId;
   const row = decamelizeKeys({ title, imageUrl, description, rating, topicId, userId });
 
   knex('posts')

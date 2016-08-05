@@ -10,6 +10,8 @@ const morgan = require('morgan');
 const users = require('./routes/users');
 const topics = require('./routes/topics');
 const posts = require('./routes/posts');
+const token = require('./routes/token');
+const cookieParser = require('cookie-parser');
 
 
 const app = express();
@@ -29,9 +31,11 @@ switch (app.get('env')) {
 }
 
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(token);
 app.use(users);
 app.use(topics);
 app.use(posts);

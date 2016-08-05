@@ -36,7 +36,7 @@ router.post('/api/users', (req, res, next) => {
 
       delete user.hashedPassword;
 
-      req.session.userId = user.id;
+      // req.session.userId = user.id;
 
       res.send(user);
     })
