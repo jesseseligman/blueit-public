@@ -1,10 +1,10 @@
-<div ng-controller="topicsCtrl as topicsCtrl" class="container">
+<div class="container">
   <div class="row">
 
     <div class="post-menu input-field col s12 m5 l4 offset-l1">
-      <select ng-model="topicsCtrl.selected" material-select watch>
+      <select ng-model="postsCtrl.selectedTopic" material-select watch>
         <option value="All">All</option>
-        <option ng-repeat="topic in topicsCtrl.topics" ng-value="topic.id">{{ topic.name }}</option>
+        <option ng-repeat="topic in postsCtrl.topics" ng-value="topic.id">{{ topic.name }}</option>
       </select>
       <label>Topic</label>
     </div>
@@ -17,7 +17,7 @@
       <label>Sort By</label>
     </div>
 
-    <div ng-repeat="post in postsCtrl.posts | orderBy : postsCtrl.sortBy" class="col s12" ng-show="topicsCtrl.isSelected(post.topicId)">
+    <div ng-repeat="post in postsCtrl.posts | orderBy : postsCtrl.sortBy" class="col s12" ng-show="postsCtrl.isSelected(post.topicId)">
       <div class="grey lighten-4 card horizontal">
         <div class="card-image">
           <img ng-src="{{post.imageUrl}}">
@@ -50,19 +50,19 @@
     <div class="modal-content" ng-controller="authCtrl as authCtrl">
       <div class="row">
 
-        <form id="new-post" name="postsCtrl.postForm" class="col s12" ng-submit="postsCtrl.submitPost(postsCtrl.postForm, topicsCtrl.postTopic, topicsCtrl.newTopic); topicsCtrl.formatField()" novalidate>
+        <form id="new-post" name="postsCtrl.postForm" class="col s12" ng-submit="postsCtrl.submitPost()" novalidate>
           <div class="row">
             <div class="input-field col s12 l4">
-              <select ng-model="topicsCtrl.postTopic" material-select watch ng-change="topicsCtrl.formatField()">
+              <select ng-model="postsCtrl.postTopic" material-select watch ng-change="postsCtrl.formatField()">
                 <option value="Create New">Create New</option>
-                <option ng-repeat="topic in topicsCtrl.topics |   limitTo:-topicsCtrl.topics.length + 1"  ng-value="topic.id">{{ topic.name }}
+                <option ng-repeat="topic in postsCtrl.topics |   limitTo:-postsCtrl.topics.length + 1"  ng-value="topic.id">{{ topic.name }}
                 </option>
               </select>
               <label>Topic</label>
             </div>
 
             <div class="input-field col s12 l8">
-              <input ng-model="topicsCtrl.newTopic" ng-disabled="topicsCtrl.postTopic !=='Create New'" id="topicName" type="text" name="topicName" ng-required="topicsCtrl.postTopic === 'Create New'" ng-minlength="3" ng-class="{'valid': postsCtrl.postForm.topicName.$valid, 'invalid': postsCtrl.postForm.topicName.$invalid && postsCtrl.postForm.topicName.$dirty}">
+              <input ng-model="postsCtrl.newTopic" ng-disabled="postsCtrl.postTopic !=='Create New'" id="topicName" type="text" name="topicName" ng-required="postsCtrl.postTopic === 'Create New'" ng-minlength="3" ng-class="{'valid': postsCtrl.postForm.topicName.$valid, 'invalid': postsCtrl.postForm.topicName.$invalid && postsCtrl.postForm.topicName.$dirty}">
               <label for="topicName">New Topic</label>
             </div>
           </div>
