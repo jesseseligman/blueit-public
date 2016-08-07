@@ -13,7 +13,6 @@ const posts = require('./routes/posts');
 const token = require('./routes/token');
 const cookieParser = require('cookie-parser');
 
-
 const app = express();
 
 app.disable('x-powered-by');

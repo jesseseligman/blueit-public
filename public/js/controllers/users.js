@@ -5,9 +5,9 @@
 
   app.controller('usersCtrl', usersCtrl);
 
-  usersCtrl.$inject = ['$routeParams', 'usersSvc'];
+  usersCtrl.$inject = ['usersSvc'];
 
-  function usersCtrl($routeParams, usersSvc) {
+  function usersCtrl(usersSvc) {
     this.user = {};
 
     this.addUser = () => {
@@ -18,7 +18,7 @@
         .catch((err) => {
           throw err;
         });
-    }
+    };
   };
-  
+
 })();

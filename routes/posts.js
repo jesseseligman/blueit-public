@@ -12,8 +12,9 @@ const knex = require('../knex');
 const { checkAuth } = require('../middleware');
 
 router.get('/api/posts', (req, res, next) => {
-  knex.from('posts')
-    .innerJoin('users', 'users.id', 'posts.user_id')
+  knex.select('posts.created_at', 'description', 'image_url', 'title', 'rating', 'topic_id', 'users.username')
+    .from('users')
+    .innerJoin('posts', 'users.id', 'posts.user_id')
     .orderBy('title')
     .then((rows) => {
       const posts = camelizeKeys(rows);

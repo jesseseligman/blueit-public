@@ -5,9 +5,9 @@
 
   app.controller('postsCtrl', postsCtrl);
 
-  postsCtrl.$inject = ['$routeParams', 'postsSvc'];
+  postsCtrl.$inject = ['postsSvc'];
 
-  function postsCtrl( $routeParams, postsSvc) {
+  function postsCtrl(postsSvc) {
     this.sortBy = '-rating';
     this.newPost = {};
     this.posts = [];
@@ -31,6 +31,7 @@
           })
           .then((res) => {
             this.newPost = {};
+            this.postForm.$setPristine();
             $('#post-modal').closeModal();
             activate();
           })

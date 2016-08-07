@@ -5,9 +5,9 @@
 
   app.controller('topicsCtrl', topicsCtrl);
 
-  topicsCtrl.$inject = ['$routeParams', 'topicsSvc'];
+  topicsCtrl.$inject = ['topicsSvc'];
 
-  function topicsCtrl($routeParams, topicsSvc) {
+  function topicsCtrl(topicsSvc) {
     this.topics = [];
     this.selected = 'All';
     this.postTopic = 'Create New';
@@ -16,7 +16,6 @@
     this.activate = () => {
       topicsSvc.getTopics()
         .then((topics) => {
-          topics.unshift({ id: 'All', name: 'All'});
           this.topics = topics;
           this.newTopic = '';
         })
@@ -36,5 +35,5 @@
     this.isSelected = (id) => id === Number.parseInt(this.selected) || this.selected === 'All';
   };
 
-  
+
 })();
