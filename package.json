@@ -6,10 +6,14 @@
   "scripts": {
     "test": "mocha",
     "start": "node server.js",
-    "knex": "knex"
+    "knex": "knex",
+    "nodemon": "nodemon server.js",
+    "heroku-postbuild": "knex migrate: latest",
+    "nf": "nf start"
   },
-  "author": "Ian Smith <ian.smith@galvanize.com>",
+  "author": "Jesse Seligman <jesseseligman@gmail.com>",
   "contributors": [
+    "Ian Smith <ian.smith@galvanize.com>",
     "Ken McGrady <ken.mcgrady@galvanize.com>"
   ],
   "license": "MIT",
@@ -31,10 +35,11 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "dotenv": "^2.0.0",
+    "foreman": "^1.4.1",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2"
   },
   "engines": {
-    "node": "6.2.2"
+    "node": "6.3.0"
   }
 }
