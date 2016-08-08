@@ -55,7 +55,7 @@
             <div class="input-field col s12 l4">
               <select ng-model="postsCtrl.postTopic" material-select watch ng-change="postsCtrl.formatField()">
                 <option value="Create New">Create New</option>
-                <option ng-repeat="topic in postsCtrl.topics |   limitTo:-postsCtrl.topics.length + 1"  ng-value="topic.id">{{ topic.name }}
+                <option ng-repeat="topic in postsCtrl.topics"  ng-value="topic.id">{{ topic.name }}
                 </option>
               </select>
               <label>Topic</label>
