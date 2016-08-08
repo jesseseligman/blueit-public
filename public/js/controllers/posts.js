@@ -7,7 +7,7 @@
 
   postsCtrl.$inject = ['postsSvc', 'topicsSvc', '$scope'];
 
-  function postsCtrl(postsSvc, topicsSvc, $scope) {
+  function postsCtrl(postsSvc, topicsSvc) {
     // Variables for topics
     this.topics = [];
     this.selectedTopic = 'All';
@@ -20,7 +20,8 @@
       }
     };
 
-    this.isSelected = (id) => id === Number.parseInt(this.selectedTopic) || this.selectedTopic === 'All';
+    this.isSelected = (id) => id === Number.parseInt(this.selectedTopic) ||
+    this.selectedTopic === 'All';
 
     // Variables for posts
     this.sortBy = '-rating';
@@ -62,7 +63,7 @@
           .then((topicId) => {
             return postsSvc.submitPost(topicId, this.newPost)
           })
-          .then((res) => {
+          .then((_res) => {
             this.submitActions();
           })
           .catch((err) => {
@@ -71,7 +72,7 @@
       }
       else {
         return postsSvc.submitPost(this.postTopic, this.newPost)
-          .then((res) => {
+          .then((_res) => {
             this.submitActions();
           })
           .catch((err) => {
