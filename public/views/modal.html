@@ -1,0 +1,44 @@
+<div id="post-modal" class="modal">
+  <div class="modal-content" ng-controller="authCtrl as authCtrl">
+    <div class="row">
+
+      <form id="new-post" name="postsCtrl.postForm" class="col s12" ng-submit="postsCtrl.submitPost()" novalidate>
+        <div class="row">
+          <div class="input-field col s12 l4">
+            <select ng-model="postsCtrl.postTopic" material-select watch ng-change="postsCtrl.formatField()">
+              <option value="Create New">Create New</option>
+              <option ng-repeat="topic in postsCtrl.topics"  ng-value="topic.id">{{ topic.name }}
+              </option>
+            </select>
+            <label>Topic</label>
+          </div>
+
+          <div class="input-field col s12 l8">
+            <input ng-model="postsCtrl.newTopic" ng-disabled="postsCtrl.postTopic !=='Create New'" id="topicName" type="text" name="topicName" ng-required="postsCtrl.postTopic === 'Create New'" ng-minlength="3" ng-class="{'valid': postsCtrl.postForm.topicName.$valid, 'invalid': postsCtrl.postForm.topicName.$invalid && postsCtrl.postForm.topicName.$dirty}">
+            <label for="topicName">New Topic</label>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s12 l6">
+            <input ng-model="postsCtrl.newPost.title" id="post-title" type="text" name="title" ng-class="{'valid': postsCtrl.postForm.title.$valid, 'invalid': postsCtrl.postForm.title.$invalid && postsCtrl.postForm.title.$dirty}" ng-minlength="3" required>
+            <label for="post-title">Title</label>
+          </div>
+          <div class="input-field col s12 l6">
+            <input ng-model="postsCtrl.newPost.imageUrl" id="post-url" type="url" name="imageUrl" ng-class="{'valid': postsCtrl.postForm.imageUrl.$valid, 'invalid': postsCtrl.postForm.imageUrl.$invalid && postsCtrl.postForm.imageUrl.$dirty}" required>
+            <label for="post-url">Image URL</label>
+          </div>
+          <div class="input-field col s12">
+            <input ng-model="postsCtrl.newPost.description" id="post-description" type="text" name="description" ng-class="{'valid': postsCtrl.postForm.description.$valid, 'invalid': postsCtrl.postForm.description.$invalid && postsCtrl.postForm.description.$dirty}" ng-minlength="3" ng-maxlength="60" required>
+            <label for="post-description">Description</label>
+          </div>
+
+          <button class="btn waves-effect waves-light" form="new-post" type="submit" >Submit
+          <i class="material-icons right">send</i>
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
