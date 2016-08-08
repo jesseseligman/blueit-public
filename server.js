@@ -1,4 +1,7 @@
 'use strict';
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 const express = require('express');
 const port = process.env.PORT || 8000;
@@ -12,10 +15,6 @@ const topics = require('./routes/topics');
 const posts = require('./routes/posts');
 const token = require('./routes/token');
 const cookieParser = require('cookie-parser');
-
-// if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-// }
 
 const app = express();
 
