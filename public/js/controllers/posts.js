@@ -5,9 +5,9 @@
 
   app.controller('postsCtrl', postsCtrl);
 
-  postsCtrl.$inject = ['postsSvc', 'topicsSvc'];
+  postsCtrl.$inject = ['postsSvc', 'topicsSvc', '$scope'];
 
-  function postsCtrl(postsSvc, topicsSvc) {
+  function postsCtrl(postsSvc, topicsSvc, $scope) {
     // Variables for topics
     this.topics = [];
     this.selectedTopic = 'All';
@@ -35,9 +35,27 @@
       post.rating -= 1;
     };
 
+    // Code for materialize toast mesages
+    this.validationToasts = () => {
+      const form = this.postForm;
+
+      if (form.topicName.$invalid) {
+        Materialize.toast('Topic name is requred and must be at least 3 characters.', 2500);
+      }
+      else if (form.title.$invalid) {
+        Materialize.toast('Title is required and must be at least 3 characters.', 2500);
+      }
+      else if (form.imageUrl.$invalid) {
+        Materialize.toast('Image URL is required and must be a valid URL.', 2500);
+      }
+      else if (form.description.$invalid) {
+        Materialize.toast('Desciption is required and must be between 3 and 60 characters.', 2500);
+      }
+    };
+
     this.submitPost = function() {
       if (this.postForm.$invalid) {
-        return console.log('invalid');
+        return this.validationToasts();
       }
       if (this.postTopic === 'Create New') {
         postsSvc.submitTopic(this.newTopic)

@@ -1,14 +1,27 @@
-<h3>Register</h3>
+<h3 class="center">Register</h3>
 
 <div class="container">
   <form id="register" name="register" method="post" ng-submit="usersCtrl.addUser(usersCtrl.user)">
-    <input type="text" name="name" ng-model="usersCtrl.user.username" placeholder="Username">
 
-    <input type="password" name="name" ng-model="usersCtrl.user.password" placeholder="Password">
+    <div class="input-field">
+      <input id="username" type="text" name="name" ng-model="usersCtrl.user.username">
+      <label for="username">Username</label>
+    </div>
 
-    <input type="text" name="name" ng-model="usersCtrl.user.firstName" placeholder="First Name">
+    <div class="input-field">
+      <input id="password" type="password" name="name" ng-model="usersCtrl.user.password">
+      <label for"password">Password</label>
+    </div>
 
-    <input type="text" name="name" ng-model="usersCtrl.user.lastName" placeholder="Last Name">
+    <div class="input-field">
+      <input id="first-name" type="text" name="name" ng-model="usersCtrl.user.firstName">
+      <label for="first-name">First Name</label>
+    </div>
+
+    <div class="input-field">
+      <input id="last-name" type="text" name="name" ng-model="usersCtrl.user.lastName">
+      <label for="last-name">Last Name</label>
+    </div>
 
     <button class="btn waves-effect waves-light" form="register" type="submit" name="action">Submit
     <i class="material-icons right">send</i>
