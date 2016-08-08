@@ -6,6 +6,6 @@
   app.directive('biPostModal', function() {
     return {
       templateUrl: '../views/modal.html'
-    }
+    };
   })
 })();
