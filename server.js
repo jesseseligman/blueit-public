@@ -13,6 +13,10 @@ const posts = require('./routes/posts');
 const token = require('./routes/token');
 const cookieParser = require('cookie-parser');
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const app = express();
 
 app.disable('x-powered-by');
