@@ -13,7 +13,6 @@
     this.addUser = () => {
       usersSvc.postUser(this.user)
         .then((user) => {
-          console.log(user);
         })
         .catch((err) => {
           throw err;
